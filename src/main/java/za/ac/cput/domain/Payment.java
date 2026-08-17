@@ -89,6 +89,7 @@ public class Payment {
     }
 
     public String getReviewId() {
+        return null;
     }
 
     public static class Builder {
