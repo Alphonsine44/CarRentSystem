@@ -1,51 +1,46 @@
 package za.ac.cput.service;
 
-
-
+import org.springframework.stereotype.Service;
 import za.ac.cput.domain.MaintenanceRecord;
-import za.ac.cput.domain.Review;
+import za.ac.cput.repository.MaintenanceRecordRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
+@Service
 public class MaintenanceRecordServiceImpl implements MaintenanceRecordService {
 
-    private static MaintenanceRecordService service = null;
-    private final Map<String, MaintenanceRecord> maintenanceDB;
+    private final MaintenanceRecordRepository repository;
 
-    private MaintenanceRecordServiceImpl() {
-        maintenanceDB = new HashMap<>();
-    }
-
-    public static MaintenanceRecordService getService() {
-        if (service == null) {
-            service = new MaintenanceRecordServiceImpl();
-        }
-        return service;
+    public MaintenanceRecordServiceImpl(MaintenanceRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public MaintenanceRecord create(MaintenanceRecord maintenanceRecord) {
-        maintenanceDB.put(maintenanceRecord.getRecordId(), maintenanceRecord);
-        return maintenanceRecord;
+        return repository.save(maintenanceRecord);
     }
 
     @Override
     public MaintenanceRecord read(String recordId) {
-        return maintenanceDB.get(recordId);
+        return repository.findById(recordId).orElse(null);
     }
 
     @Override
-    public Review update(@org.jetbrains.annotations.UnknownNullability Review maintenanceRecord) {
-        if (maintenanceDB.containsKey(maintenanceRecord.getRecordId())) {
-            maintenanceDB.put(maintenanceRecord.getRecordId(),maintenanceRecord);
-            return maintenanceRecord;
-        }
-        return null;
+    public MaintenanceRecord update(MaintenanceRecord maintenanceRecord) {
+        return repository.save(maintenanceRecord);
     }
 
     @Override
     public boolean delete(String recordId) {
-        return maintenanceDB.remove(recordId) != null;
+        if (repository.existsById(recordId)) {
+            repository.deleteById(recordId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<MaintenanceRecord> findAll() {
+        return repository.findAll();
     }
 }

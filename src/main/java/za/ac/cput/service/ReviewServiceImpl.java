@@ -1,55 +1,52 @@
 package za.ac.cput.service;
 
-import za.ac.cput.domain.Payment;
+import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Review;
+import za.ac.cput.repository.ReviewRepository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/*
+ * Class Name: ReviewServiceImpl
+ * Description: ReviewService implementation for CarRentSystem
+ * Author: Lucky July Twala (231242840)
+ * Date: 12 July 2026
+ */
+@Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private static ReviewService service = null;
-    private final Map<String, Review> reviewDB;
+    private final ReviewRepository repository;
 
-    private ReviewServiceImpl() {
-        reviewDB = new HashMap<>();
-    }
-
-    public static ReviewService getService() {
-        if (service == null) {
-            service = new ReviewServiceImpl();
-        }
-        return service;
+    public ReviewServiceImpl(ReviewRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public Review create(Review review) {
-        reviewDB.put(review.getReviewId(), review);
-        return review;
+        return repository.save(review);
     }
 
     @Override
     public Review read(String reviewId) {
-        return reviewDB.get(reviewId);
+        return repository.findById(reviewId).orElse(null);
     }
 
     @Override
-    public Payment update(@org.jetbrains.annotations.UnknownNullability Review review) {
-        if (reviewDB.containsKey(review.getReviewId())) {
-            reviewDB.put(review.getReviewId(), review);
-            return review;
-        }
-        return null;
+    public Review update(Review review) {
+        return repository.save(review);
     }
 
     @Override
     public boolean delete(String reviewId) {
-        return reviewDB.remove(reviewId) != null;
+        if (repository.existsById(reviewId)) {
+            repository.deleteById(reviewId);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public List<Review> findAll() {
-        return List.of();
+        return repository.findAll();
     }
 }
