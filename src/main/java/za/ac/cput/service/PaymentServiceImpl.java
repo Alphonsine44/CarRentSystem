@@ -1,6 +1,7 @@
 package za.ac.cput.service;
 
 import org.springframework.stereotype.Service;
+import za.ac.cput.domain.MaintenanceRecord;
 import za.ac.cput.domain.Payment;
 import za.ac.cput.repository.PaymentRepository;
 
@@ -24,7 +25,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment update(Payment payment) {
+    public Payment update(MaintenanceRecord payment) {
         return repository.save(payment);
     }
 
