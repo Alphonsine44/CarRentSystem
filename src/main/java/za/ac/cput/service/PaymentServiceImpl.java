@@ -14,6 +14,9 @@ public class PaymentServiceImpl implements PaymentService {
         this.repository = repository;
     }
 
+    public static PaymentService getService() {
+    }
+
     @Override
     public Payment create(Payment payment) {
         return repository.save(payment);
@@ -22,6 +25,11 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment read(String paymentId) {
         return repository.findById(paymentId).orElse(null);
+    }
+
+    @Override
+    public Payment update(Payment payment) {
+        return null;
     }
 
     @Override

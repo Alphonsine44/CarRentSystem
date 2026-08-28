@@ -28,7 +28,7 @@ public class Payment {
         this.paymentStatus = builder.paymentStatus;
     }
 
-    public Payment getPaymentId() {
+    public String getPaymentId() {
         return paymentId;
     }
 
